@@ -4,6 +4,16 @@
 
 @font-face 
 {
-    font-family: "Bellota";
+    font-family: "BellotaR";
     src: url("../assets/fonts/Bellota-Regular.otf");
+}
+@font-face 
+{
+    font-family: "BellotaB";
+    src: url("../assets/fonts/Bellota-Bold.otf");
+}
+@font-face 
+{
+    font-family: "BellotaL";
+    src: url("../assets/fonts/Bellota-Light.otf");
 }
