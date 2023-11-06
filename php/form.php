@@ -1,4 +1,8 @@
 <?php
+require "../vendor/autoload.php";
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
  if (isset($_GET["submit"]))
  {
@@ -18,11 +22,23 @@
     echo "<script> console.log('$subject') </script>";
     echo "<script> console.log('$message') </script>";
 
+    $phpmailer = new PHPMailer();
+    $phpmailer->isSMTP();
+    $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
+    $phpmailer->SMTPAuth = true;
+    $phpmailer->Port = 2525;
+    $phpmailer->Username = '97f5161e32ef42';
+    $phpmailer->Password = 'c02388007fe27d';
+
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) 
     {
         echo "This cleaned email address is considered valid.";
-        //$response = "This is the response to your message";
-        //mail($email, $subject, $response);
+        $response = "This is the response to your message";
+        $phpmailer->setFrom("justine.leleu.28@gmail.com","Justine");
+        $phpmailer->addAddress($email, "$firstName");
+        $phpmailer->Subject = $subject;
+        $phpmailer->Body = $response;
+        $phpmailer->send();
     } 
     else 
     {
