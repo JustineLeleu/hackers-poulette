@@ -11,21 +11,23 @@
 
     <header class="flex justify-between items-center px-10">
         <img src="../assets/images/hackers-poulette-logo.png" alt="Hackers Poulette logo" class="w-[150px]">
-        <nav class="flex gap-10 font-bellotaR text-lightBlack text-base">
-            <a href="">Home</a>
-            <a href="">Shop</a>
-            <a href="">About</a>
-            <a href="">Contact</a>
+        <nav role="navigation">
+            <ul class="flex gap-10 font-bellotaR text-lightBlack text-base">
+                <li><a href="">Home</a></li>
+                <li><a href="">Shop</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Contact</a></li>
+            </ul>
         </nav>
     </header>
 
-    <section class="flex flex-col items-center my-10">
+    <section class="flex flex-col items-center my-10" aria-description="Contact Us - Any question or remarks? Just write us a message!">
         <h1 class="font-bellotaB text-lightBlack text-[40px]">Contact Us</h1>
         <p class="font-bellotaR text-lightBlack text-lg">Any question or remarks? Just write us a message!</p>
     </section>
 
     <div class="bg-white rounded-lg w-11/12 mx-auto p-1 flex">
-        <section class="bg-black text-white w-1/3 rounded-lg p-8">
+        <section class="bg-black text-white w-1/3 rounded-lg p-8" aria-description="Contact Informations">
             <h2 class="font-bellotaB text-[28px]">Contact Information</h2>
             <div class="flex flex-col gap-5 my-10">
                 <div class="flex gap-5 text-base font-bellotaR">
@@ -75,24 +77,30 @@
 
             <div class="flex flex-col gap-5">
                 <h3 class="font-bellotaB text-lg">Company</h3>
-                <a href="">About</a>
-                <a href="">Contact</a>
-                <a href="">Blogs</a>
+                <ul class="flex flex-col gap-5" role="navigation">
+                    <li><a href="">About</a></li>
+                    <li><a href="">Contact</a></li>
+                    <li><a href="">Blogs</a></li>
+                </ul>
             </div>
 
             <div class="flex flex-col gap-5">
                 <h3 class="font-bellotaB text-lg">Legal</h3>
-                <a href="">Privacy Policy</a>
-                <a href="">Terms & Services</a>
-                <a href="">Terms of Use</a>
-                <a href="">Refund Policy</a>
+                <ul class="flex flex-col gap-5" role="navigation">
+                    <li><a href="">Privacy Policy</a></li>
+                    <li><a href="">Terms & Services</a></li>
+                    <li><a href="">Terms of Use</a></li>
+                    <li><a href="">Refund Policy</a></li>
+                </ul>
             </div>
 
             <div class="flex flex-col gap-5">
                 <h3 class="font-bellotaB text-lg">Quick Links</h3>
-                <a href="">Shop</a>
-                <a href="">Downloads</a>
-                <a href="">Forum</a>
+                <ul class="flex flex-col gap-5" role="navigation">
+                    <li><a href="">Shop</a></li>
+                    <li><a href="">Downloads</a></li>
+                    <li><a href="">Forum</a></li>
+                </ul>
             </div>
 
             <div class="flex flex-col gap-5 bg-lightBlack rounded-lg p-4 h-fit w-fit">
