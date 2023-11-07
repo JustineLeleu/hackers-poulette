@@ -2,10 +2,14 @@
 require "../vendor/autoload.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
+//use PHPMailer\PHPMailer\SMTP;
 
- if (isset($_GET["submit"]))
- {
+$nameErrVisibility = $lastNameErrVisibility = $emailErrVisibility = $countryErrVisibility = $emailErrVisibility = $messageErrVisibility = "hidden";
+$nameErr = $lastNameErr = $emailErr = $countryErr = $emailErr = $messageErr = "";
+$firstName = $lastName = $email = $country = $email = $message = "";
+
+if (isset($_GET["submit"]))
+{
     if (isset($_GET["website"]) && $_GET["website"] != "")
     {
         echo "<script> console.log('Honey pot') </script>";
@@ -13,21 +17,48 @@ use PHPMailer\PHPMailer\SMTP;
         return false;
     }
 
-    $firstName = filter_var($_GET['firstName'], FILTER_SANITIZE_SPECIAL_CHARS);
-    $lastName = filter_var($_GET['lastName'], FILTER_SANITIZE_SPECIAL_CHARS);
-    $email = filter_var($_GET['email'], FILTER_SANITIZE_EMAIL);
-    $country = filter_var($_GET['country'], FILTER_SANITIZE_SPECIAL_CHARS);
-    $gender = isset($_GET["gender"]) ? $_GET["gender"] : "";
-    $subject = $_GET["subject"];
-    $message = filter_var($_GET['message'], FILTER_SANITIZE_SPECIAL_CHARS);
+    $isDataOk = true;
 
-    echo "<script> console.log('$firstName') </script>";
-    echo "<script> console.log('$lastName') </script>";
-    echo "<script> console.log('$email') </script>";
-    echo "<script> console.log('$country') </script>";
-    echo "<script> console.log('$gender') </script>";
-    echo "<script> console.log('$subject') </script>";
-    echo "<script> console.log('$message') </script>";
+    function sanitizeData($data) 
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    function validateData($data, &$errorVisibility, &$error)
+    {
+        if (strlen($data) < 1)
+        {
+            $error = "You must fill this section";
+            $errorVisibility = "block";
+        }
+        elseif(strlen($data) > 256)
+        {
+            $error = "The maximum of characters allowed is 256";
+            $errorVisibility = "block";
+        }
+        elseif (!preg_match("/^[a-zA-Z-' ,.:;0-9]*$/",$data)) 
+        {
+            $error = "Only letters and white space allowed";
+            $errorVisibility = "block";
+            $isDataOk = false;
+        }
+    }
+
+    $firstName = sanitizeData($_GET['firstName']);
+    validateData($firstName, $nameErrVisibility, $nameErr);
+    echo "<script> console.log('$nameErr') </script>";
+    $lastName = sanitizeData($_GET['lastName']);
+    validateData($lastName, $lastNameErrVisibility, $lastNameErr);
+    $email = filter_var($_GET['email'], FILTER_SANITIZE_EMAIL);
+    $country = sanitizeData($_GET['country']);
+    validateData($country, $countryErrVisibility, $countryErr);
+    $gender = $_GET["gender"];
+    $subject = $_GET["subject"];
+    $message = sanitizeData($_GET['message']);
+    validateData($message, $messageErrVisibility, $messageErr);
 
     $phpmailer = new PHPMailer();
     $phpmailer->isSMTP();
@@ -37,9 +68,8 @@ use PHPMailer\PHPMailer\SMTP;
     $phpmailer->Username = '97f5161e32ef42';
     $phpmailer->Password = 'c02388007fe27d';
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) 
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) && $isDataOk) 
     {
-        echo "This cleaned email address is considered valid.";
         $response = "This is the response to your message";
         $phpmailer->setFrom("justine.leleu.28@gmail.com","Justine");
         $phpmailer->addAddress($email, "$firstName");
@@ -49,9 +79,9 @@ use PHPMailer\PHPMailer\SMTP;
     } 
     else 
     {
-        echo "This cleaned email address is not valid. Sorry. xoxo.";
+        $emailErrVisibility = "block";
     }
- }
+}
 
 ?>
 
@@ -60,12 +90,14 @@ use PHPMailer\PHPMailer\SMTP;
 
         <div class="border-b border-gray flex flex-col gap-2 pb-2" aria-description="Give your first name">
             <label for="firstName">First Name</label>
-            <input type="text" name="firstName" id="firstName" maxlength="50" required class="focus:outline-none"/>
+            <input type="text" name="firstName" id="firstName" value="<?php echo $firstName;?>" class="focus:outline-none"/>
+            <span class="error text-red-600 <?php echo $nameErrVisibility;?>"><?php echo $nameErr;?></span>
         </div>
 
         <div class="border-b border-gray flex flex-col gap-2 pb-2" aria-description="Give your last name"> 
             <label for="lastName">Last Name</label>
-            <input type="text" name="lastName" id="lastName" maxlength="50" required class="focus:outline-none"/>
+            <input type="text" name="lastName" id="lastName" minlength="1" maxlength="256" value="<?php echo $lastName;?>" required class="focus:outline-none"/>
+            <span class="error text-red-600 <?php echo $lastNameErrVisibility;?>"><?php echo $lastNameErr;?></span>
         </div>
 
     </div>
@@ -74,12 +106,14 @@ use PHPMailer\PHPMailer\SMTP;
 
         <div class="border-b border-gray flex flex-col gap-2 pb-2" aria-description="Give your email">
             <label for="email">Email</label>
-            <input type="email" name="email" id="email" maxlength="50" required class="focus:outline-none"/>
+            <input type="email" name="email" id="email" minlength="1" maxlength="256" value="<?php echo $email;?>" required class="focus:outline-none"/>
+            <span class="error text-red-600 <?php echo $emailErrVisibility;?>"><?php echo $emailErr;?></span>
         </div>
 
         <div class="border-b border-gray flex flex-col gap-2 pb-2" aria-description="Give your country">
             <label for="country">Country</label>
-            <input type="text" name="country" id="country" maxlength="50" required class="focus:outline-none"/>
+            <input type="text" name="country" id="country" minlength="1" maxlength="256" value="<?php echo $country;?>" required class="focus:outline-none"/>
+            <span class="error text-red-600 <?php echo $countryErrVisibility;?>"><?php echo $countryErr;?></span>
         </div>
 
     </div>
@@ -120,7 +154,10 @@ use PHPMailer\PHPMailer\SMTP;
     <div class="border-b border-gray flex flex-col gap-2 pb-1 mt-12" aria-description="Write your message">
         <label for="message">Message</label>
         <div class="flex justify-between pr-3">
-            <input type="text" name="message" id="message" placeholder="Write your message..." maxlength="255" required class="w-full focus:outline-none"/>
+            <div class="w-full">
+                <textarea name="message" id="message" placeholder="Write your message..." minlength="1" maxlength="256" required class="w-full focus:outline-none"><?php echo $message;?></textarea>
+                <span class="error text-red-600 <?php echo $messageErrVisibility;?>"><?php echo $messageErr;?></span>
+            </div>
             <button type="submit" name="submit" class="bg-black hover:bg-blueGreen text-white p-3 px-8 rounded whitespace-nowrap">Send Message</button>
         </div>
     </div>
