@@ -90,7 +90,7 @@ if (isset($_GET["submit"]))
 
         <div class="border-b border-gray flex flex-col gap-2 pb-2" aria-description="Give your first name">
             <label for="firstName">First Name</label>
-            <input type="text" name="firstName" id="firstName" value="<?php echo $firstName;?>" class="focus:outline-none"/>
+            <input type="text" name="firstName" id="firstName" minlength="1" maxlength="256" value="<?php echo $firstName;?>" required class="focus:outline-none"/>
             <span class="error text-red-600 <?php echo $nameErrVisibility;?>"><?php echo $nameErr;?></span>
         </div>
 
