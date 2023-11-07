@@ -6,6 +6,13 @@ use PHPMailer\PHPMailer\SMTP;
 
  if (isset($_GET["submit"]))
  {
+    if (isset($_GET["website"]) && $_GET["website"] != "")
+    {
+        echo "<script> console.log('Honey pot') </script>";
+        echo "Honey pot";
+        return false;
+    }
+
     $firstName = filter_var($_GET['firstName'], FILTER_SANITIZE_SPECIAL_CHARS);
     $lastName = filter_var($_GET['lastName'], FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_var($_GET['email'], FILTER_SANITIZE_EMAIL);
@@ -83,10 +90,10 @@ use PHPMailer\PHPMailer\SMTP;
             <label for="gender">Gender</label>
 
             <div class="flex items-center gap-2">
-                <input type="radio" id="gender1" name="gender" value="male" class="accent-blueGreen"/>
+                <input type="radio" id="gender1" name="gender" value="male" required class="accent-blueGreen"/>
                 <label for="gender1">M</label>
 
-                <input type="radio" id="gender2" name="gender" value="female" class="ml-4 accent-blueGreen"/>
+                <input type="radio" id="gender2" name="gender" value="female" required class="ml-4 accent-blueGreen"/>
                 <label for="gender2">F</label>
             </div>
         </div>
@@ -107,6 +114,8 @@ use PHPMailer\PHPMailer\SMTP;
         </div>
 
     </div>
+
+    <input id="website" name="website" type="text" value="" class="hidden"/>
 
     <div class="border-b border-gray flex flex-col gap-2 pb-1 mt-12" aria-description="Write your message">
         <label for="message">Message</label>
