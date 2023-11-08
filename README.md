@@ -8,9 +8,8 @@ It was made in november 2023 during a formation at BeCode.
 
 ## Badges
 
-[![MIT License](https://img.shields.io/badge/HTML-red.svg)](https://choosealicense.com/licenses/mit/)
+[![MIT License](https://img.shields.io/badge/PHP-blue.svg)](https://choosealicense.com/licenses/mit/)
 [![MIT License](https://img.shields.io/badge/CSS-purple.svg)](https://choosealicense.com/licenses/mit/)
-[![MIT License](https://img.shields.io/badge/PHP-yellow.svg)](https://choosealicense.com/licenses/mit/)
 
 
 ## Screenshots
