@@ -7,6 +7,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 $nameErrVisibility = $lastNameErrVisibility = $emailErrVisibility = $countryErrVisibility = $emailErrVisibility = $messageErrVisibility = "hidden";
 $nameErr = $lastNameErr = $emailErr = $countryErr = $emailErr = $messageErr = "";
 $firstName = $lastName = $email = $country = $email = $message = "";
+$jsonString = file_get_contents("../data/countries.json");
+$countries = json_decode($jsonString, true);
 
 if (isset($_GET["submit"]))
 {
@@ -49,11 +51,10 @@ if (isset($_GET["submit"]))
 
     $firstName = sanitizeData($_GET['firstName']);
     validateData($firstName, $nameErrVisibility, $nameErr);
-    echo "<script> console.log('$nameErr') </script>";
     $lastName = sanitizeData($_GET['lastName']);
     validateData($lastName, $lastNameErrVisibility, $lastNameErr);
     $email = filter_var($_GET['email'], FILTER_SANITIZE_EMAIL);
-    $country = sanitizeData($_GET['country']);
+    $country = $_GET['country'];
     validateData($country, $countryErrVisibility, $countryErr);
     $gender = $_GET["gender"];
     $subject = $_GET["subject"];
@@ -85,6 +86,14 @@ if (isset($_GET["submit"]))
 
 ?>
 
+<script>
+    $(document).ready(function () {
+      $('select').selectize({
+          sortField: 'text'
+      });
+  });
+</script>
+
 <form action="get" class="pt-12 mx-12 font-bellotaR text-xs w-full">
     <div class="grid grid-cols-2 gap-12">
 
@@ -112,7 +121,20 @@ if (isset($_GET["submit"]))
 
         <div class="border-b border-gray flex flex-col gap-2 pb-2" aria-description="Give your country">
             <label for="country">Country</label>
-            <input type="text" name="country" id="country" minlength="1" maxlength="256" value="<?php echo $country;?>" required class="focus:outline-none"/>
+            <select name="country" id="country" placeholder="Pick a country..." required>
+                <option value="">Select a state...</option>
+
+                <?php
+
+                foreach ($countries as $country) 
+                {
+                    ?>
+                    <option value="<?php echo $country['code']; ?>" required><?php echo $country['name']; ?></option>
+                    <?php
+                }
+
+                ?>
+            </select>
             <span class="error text-red-600 <?php echo $countryErrVisibility;?>"><?php echo $countryErr;?></span>
         </div>
 
